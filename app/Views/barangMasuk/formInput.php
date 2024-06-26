@@ -70,8 +70,14 @@ Input Incoming Goods<?= $this->endSection('judul'); ?>
       </div>
     </div>
     <div class="row" id="showDataTemp"></div>
+    <div class="row justify-content-end">
+      <button class="btn btn-lg btn-success" id="buttonEndTransaction">
+        <i class="fa fa-save"></i> Save transaction
+      </button>
+    </div>
   </div>
 </div>
+<div class="modalSearchProduct" style="display:none;"></div>
 <script>
   function dataTemp() {
     let faktur = $('#faktur').val();
@@ -105,38 +111,42 @@ Input Incoming Goods<?= $this->endSection('judul'); ?>
 
   }
 
+  function ambilDataBarang() {
+    let codeproduct = $('#kdbarang').val();
+
+    $.ajax({
+      type: "post",
+      url: "/barangMasuk/ambilDataBarang",
+      data: {
+        codeproduct: codeproduct
+      },
+      dataType: "json",
+      success: function(response) {
+        if (response.success) {
+          let data = response.success;
+          $('#nameproduct').val(data.nameproduct);
+          $('#sellprice').val(data.sellprice);
+
+          $('#buyprice').focus();
+        }
+        if (response.error) {
+          alert(response.error);
+          kosong();
+        }
+      },
+      error: function(xhr, ajaxOptions, thrownError) {
+        alert(xhr.status + '\n' + thrownError);
+      }
+    });
+  }
+
   $(document).ready(function() {
     dataTemp();
     $('#kdbarang').keydown(function(e) {
       //13 kode ASCII = {enter}
       if (e.keyCode == 13) {
         e.preventDefault();
-        let codeproduct = $('#kdbarang').val();
-
-        $.ajax({
-          type: "post",
-          url: "/barangMasuk/ambilDataBarang",
-          data: {
-            codeproduct: codeproduct
-          },
-          dataType: "json",
-          success: function(response) {
-            if (response.success) {
-              let data = response.success;
-              $('#nameproduct').val(data.nameproduct);
-              $('#sellprice').val(data.sellprice);
-
-              $('#buyprice').focus();
-            }
-            if (response.error) {
-              alert(response.error);
-              kosong();
-            }
-          },
-          error: function(xhr, ajaxOptions, thrownError) {
-            alert(xhr.status + '\n' + thrownError);
-          }
-        });
+        ambilDataBarang();
       }
     });
     $('#additem').click(function(e) {
@@ -152,7 +162,7 @@ Input Incoming Goods<?= $this->endSection('judul'); ?>
           icon: "error",
           title: "Error.",
           text: "Sorry, this invoice cannot be left blank!"
-          
+
         });
       } else if (codeproduct.length == 0) {
         alert('Sorry, Code Product is required');
@@ -189,6 +199,89 @@ Input Incoming Goods<?= $this->endSection('judul'); ?>
     $('#buttonreload').click(function(e) {
       e.preventDefault();
       dataTemp();
+
+    });
+
+    $('#buttonSearchProduct').click(function(e) {
+      e.preventDefault();
+      $.ajax({
+        url: "/barangMasuk/searchDataProduct",
+        dataType: "json",
+        success: function(response) {
+          if (response.data) {
+            // .modal dari div
+            $('.modalSearchProduct').html(response.data).show();
+            // #modal dari view
+            $('#modalSearchProduct').modal('show');
+          }
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+          alert(xhr.status + '\n' + thrownError);
+        }
+      });
+
+    });
+
+    $('#buttonEndTransaction').click(function(e) {
+      e.preventDefault();
+      let faktur = $('#faktur').val();
+
+      if (faktur.length == 0) {
+        Swal.fire({
+          title: 'Message',
+          icon: 'warning',
+          text: 'Invoices cannot be blank'
+
+        });
+      } else {
+        Swal.fire({
+          title: "End Transaction",
+          text: "Are you sure you want to keep this transaction?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, Save Transaction!"
+        }).then((result) => {
+          if (result.isConfirmed) {
+            $.ajax({
+              type: "post",
+              url: "/barangMasuk/endTransaction",
+              data: {
+                faktur: faktur,
+                tglfaktur: $('#tglfaktur').val()
+              },
+              dataType: "json",
+              success: function(response) {
+                if (response.error) {
+                  Swal.fire({
+                    title: 'Error',
+                    icon: 'error',
+                    text: response.error
+
+                  });
+                }
+
+                if (response.success) {
+                  Swal.fire({
+                    title: 'Success',
+                    icon: 'success',
+                    text: response.success
+
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      window.location.reload();
+                    }
+                  })
+                }
+              },
+              error: function(xhr, ajaxOptions, thrownError) {
+                alert(xhr.status + '\n' + thrownError);
+              }
+            });
+          }
+        });
+      }
 
     });
   });
