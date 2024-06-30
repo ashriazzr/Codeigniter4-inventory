@@ -4,8 +4,8 @@
 Input Incoming Goods<?= $this->endSection('judul'); ?>
 
 <?= $this->section('subJudul'); ?>
-<button type="button" class="btn btn-sm btn-warning" onclick="location.href=('/product/index')">
-  <i class=" fa fa-backward"></i>Kembali
+<button type="button" class="btn btn-sm btn-warning" onclick="location.href=('/barangMasuk/data')">
+  <i class=" fa fa-backward"></i> Back
 </button>
 <?= $this->endSection('subJudul'); ?>
 

@@ -6,7 +6,7 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 $routes->setAutoRoute(true); //Jangan di hapus
-$routes->get('/', 'Main::index');
+$routes->get('/', 'Login::index');
 $routes->get('/category/deleteData/(:any)', 'Category::index');
 $routes->get('/category/deleteData/(:any)', 'Category::deleteData/$1');
 

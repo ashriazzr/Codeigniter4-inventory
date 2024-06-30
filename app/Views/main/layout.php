@@ -15,8 +15,21 @@
     <!-- jQuery -->
     <script src="<?= base_url() ?>/plugins/jquery/jquery.min.js"></script>
     <link rel="stylesheet" href="<?= base_url() ?>/plugins/sweetalert2/sweetalert2.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/plugins/sweetalert2/sweetalert2.min.css">
     <script src="<?= base_url() ?>/plugins/sweetalert2/sweetalert2.all.min.js"></script>
+
+    <style>
+        .main-sidebar.sidebar-dark-primary.elevation-4 {
+            background-color: #c45161 !important;
+        }
+
+        .form-inline .input-group .form-control-sidebar {
+            background-color: #efc4d6;
+        }
+
+        .form-inline .input-group .btn-sidebar {
+            background-color: #efc4d6;
+        }
+    </style>
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -47,7 +60,7 @@
                     <div class="navbar-search-block">
                         <form class="form-inline">
                             <div class="input-group input-group-sm">
-                                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                                <input id="navbar-search-input" class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
                                 <div class="input-group-append">
                                     <button class="btn btn-navbar" type="submit">
                                         <i class="fas fa-search"></i>
@@ -88,7 +101,7 @@
                 <!-- Sidebar user (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        <img src="<?= base_url() ?>/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                        <img src="<?= base_url() ?>/dist/img/profil.jpg" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
                         <a href="#" class="d-block">Administrator</a>
@@ -98,7 +111,7 @@
                 <!-- SidebarSearch Form -->
                 <div class="form-inline">
                     <div class="input-group" data-widget="sidebar-search">
-                        <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+                        <input id="sidebar-search-input" class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
                         <div class="input-group-append">
                             <button class="btn btn-sidebar">
                                 <i class="fas fa-search fa-fw"></i>
@@ -109,7 +122,7 @@
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <ul id="sidebar-menu" class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                         <li class="nav-header">Menu</li>
@@ -136,6 +149,12 @@
                             <a href="<?= site_url('barangMasuk/index'); ?>" class="nav-link">
                                 <i class="nav-icon fa fa-arrow-circle-down text-primary"></i>
                                 <p class="text">Incoming Goods</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= site_url('barangkeluar/index'); ?>" class="nav-link">
+                                <i class="nav-icon fa fa-arrow-circle-up text-warning"></i>
+                                <p class="text">Outgoing Goods</p>
                             </a>
                         </li>
                     </ul>
@@ -216,6 +235,17 @@
     <script src="<?= base_url() ?>/dist/js/adminlte.min.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="<?= base_url() ?>/dist/js/demo.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#sidebar-search-input').on('keyup', function() {
+                var value = $(this).val().toLowerCase();
+                $('#sidebar-menu li.nav-item').filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -91,8 +91,10 @@ class BarangMasuk extends BaseController
             exit('Data product is not found !');
         }
     }
+
     function deleteItem()
     {
+
         if ($this->request->isAJAX()) {
             $id = $this->request->getPost('id');
 
@@ -193,6 +195,52 @@ class BarangMasuk extends BaseController
             echo json_encode($json);
         } else {
             exit('Data product is not found !');
+        }
+    }
+
+    public function data()
+    {
+        $searchButton = $this->request->getPost('searchButton');
+        if (isset($searchButton)) {
+            $search = $this->request->getPost('search');
+            session()->set('search_facture', $search);
+            redirect()->to('/barangMasuk/data');
+        } else {
+            $search = session()->get('search_facture');
+        }
+        $modelBarangMasuk = new ModelBarangMasuk();
+
+        $totalData = $search ? $modelBarangMasuk->showData_search($search)->countAllResults() : $modelBarangMasuk->countAllResults();
+
+        $dataBarangMasuk = $search ? $modelBarangMasuk->showData_search($search)->paginate(10, 'barangMasuk') : $modelBarangMasuk->paginate(10, 'barangMasuk');
+
+        $nohalaman = $this->request->getVar('page_barangMasuk') ? $this->request->getVar('page_barangMasuk') : 1;
+
+        $data = [
+            'showData' => $dataBarangMasuk,
+            'pager' => $modelBarangMasuk->pager,
+            'nohalaman' => $nohalaman,
+            'totalData' => $totalData,
+            'search' => $search
+        ];
+        return view('barangMasuk/viewData', $data);
+    }
+
+    function detailItem()
+    {
+        if ($this->request->isAJAX()) {
+            $faktur = $this->request->getPost('faktur');
+
+            $modelDetail = new ModelDetailBarangMasuk();
+            $data = [
+                'showDataDetail' => $modelDetail->dataDetail($faktur)
+            ];
+
+            $json
+                = [
+                    'data' => view('barangMasuk/modalDetailItem', $data)
+                ];
+            echo json_encode($json);
         }
     }
 }
