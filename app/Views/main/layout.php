@@ -104,7 +104,9 @@
                         <img src="<?= base_url() ?>/dist/img/profil.jpg" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">Administrator</a>
+                        <a href="#" class="d-block">
+                            <?= session()->namauser; ?>
+                        </a>
                     </div>
                 </div>
 
@@ -125,36 +127,62 @@
                     <ul id="sidebar-menu" class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-                        <li class="nav-header">Menu</li>
+                        <?php if (session()->idlevel == 1) : ?>
+                            <li class="nav-header">Menu</li>
+                            <li class="nav-item">
+                                <a href="<?= site_url('Category/index'); ?>" class="nav-link">
+                                    <i class="nav-icon fa fa-tasks text-primary"></i>
+                                    <p class="text">Category</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="<?= site_url('Unit/index'); ?>" class="nav-link">
+                                    <i class="nav-icon fa fa-angle-double-right text-warning"></i>
+                                    <p class="text">Unit</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="<?= site_url('Product/index'); ?>" class="nav-link">
+                                    <i class="nav-icon fa fa-duotone fa-ice-cream"></i>
+                                    <p class="text">Product</p>
+                                </a>
+                            </li>
+                            <li class="nav-header">Transaction</li>
+                            <li class="nav-item">
+                                <a href="<?= site_url('barangMasuk/index'); ?>" class="nav-link">
+                                    <i class="nav-icon fa fa-arrow-circle-down text-primary"></i>
+                                    <p class="text">Incoming Goods</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="<?= site_url('barangkeluar/index'); ?>" class="nav-link">
+                                    <i class="nav-icon fa fa-arrow-circle-up text-warning"></i>
+                                    <p class="text">Outgoing Goods</p>
+                                </a>
+                            </li>
+                        <?php endif;  ?>
+
+                        <!-- USER LEVEL 2 -->
+                        <?php if (session()->idlevel == 2) : ?>
+                            <li class="nav-header">Transaction</li>
+                            <li class="nav-item">
+                                <a href="<?= site_url('barangMasuk/index'); ?>" class="nav-link">
+                                    <i class="nav-icon fa fa-arrow-circle-down text-primary"></i>
+                                    <p class="text">Incoming Goods</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="<?= site_url('barangkeluar/index'); ?>" class="nav-link">
+                                    <i class="nav-icon fa fa-arrow-circle-up text-warning"></i>
+                                    <p class="text">Outgoing Goods</p>
+                                </a>
+                            </li>
+                        <?php endif;  ?>
+
                         <li class="nav-item">
-                            <a href="<?= site_url('Category/index'); ?>" class="nav-link">
-                                <i class="nav-icon fa fa-tasks text-primary"></i>
-                                <p class="text">Category</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= site_url('Unit/index'); ?>" class="nav-link">
-                                <i class="nav-icon fa fa-angle-double-right text-warning"></i>
-                                <p class="text">Unit</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= site_url('Product/index'); ?>" class="nav-link">
-                                <i class="nav-icon fa fa-duotone fa-ice-cream"></i>
-                                <p class="text">Product</p>
-                            </a>
-                        </li>
-                        <li class="nav-header">Transaction</li>
-                        <li class="nav-item">
-                            <a href="<?= site_url('barangMasuk/index'); ?>" class="nav-link">
-                                <i class="nav-icon fa fa-arrow-circle-down text-primary"></i>
-                                <p class="text">Incoming Goods</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= site_url('barangkeluar/index'); ?>" class="nav-link">
-                                <i class="nav-icon fa fa-arrow-circle-up text-warning"></i>
-                                <p class="text">Outgoing Goods</p>
+                            <a href="<?= site_url('login/logout'); ?>" class="nav-link">
+                                <i class="nav-icon fa fa-sign-out-alt text-primary"></i>
+                                <p class="text">Logout</p>
                             </a>
                         </li>
                     </ul>

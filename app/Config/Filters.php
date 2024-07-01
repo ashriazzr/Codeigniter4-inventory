@@ -34,6 +34,9 @@ class Filters extends BaseFilters
         'forcehttps'    => ForceHTTPS::class,
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
+        'filterAdmin' => \App\Filters\FilterAdmin::class,
+        'filterWarehouse' => \App\Filters\FilterAdmin::class,
+        'filterCustomer' => \App\Filters\FilterAdmin::class
     ];
 
     /**
@@ -72,10 +75,24 @@ class Filters extends BaseFilters
             // 'honeypot',
             // 'csrf',
             // 'invalidchars',
+            'filterAdmin' => [
+                'except' => ['login/*', 'login', '/']
+            ],
+            'filterWarehouse' => [
+                'except' => ['login/*', 'login', '/']
+            ],
+            'filterCustomer' => [
+                'except' => ['login/*', 'login', '/']
+            ]
         ],
         'after' => [
+            'filterAdmin' => ['except' => ['main/*', 'unit/*', 'category/*', 'product/*', 'barangMasuk/*', 'barangKeluar/*']],
+            'filterWarehouse' => ['except' => ['main/*', 'barangMasuk/*', 'barangKeluar/*']],
+            'filterCustomer' => ['except' => ['main/*']],
+
             // 'honeypot',
             // 'secureheaders',
+            'toolbar',
         ],
     ];
 

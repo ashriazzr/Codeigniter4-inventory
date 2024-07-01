@@ -247,31 +247,64 @@
 
 <body>
     <h2>Kelompok 1 Tugas Inventory</h2>
+
     <div class="container" id="container">
         <div class="form-container sign-up-container">
+            <?= form_open('login/cekUser'); ?>
+            <?= csrf_field(); ?>
             <form action="#">
                 <h1>Create Account</h1>
                 <div class="social-container">
 
                 </div>
                 <input type="text" placeholder="Name" />
-                <input type="email" placeholder="Email" />
+                <input type="text" name="iduser" placeholder="Input ID User" />
                 <input type="password" placeholder="Password" />
                 <button>Sign Up</button>
             </form>
         </div>
-        <div class="form-container sign-in-container">
-            <form action="#">
-                <h1>Sign in</h1>
-                <div class="social-container">
+        <?= form_close(); ?>
 
-                </div>
-                <input type="email" placeholder="Email" />
-                <input type="password" placeholder="Password" />
-                <a href="#">Forgot your password?</a>
-                <button>Sign In</button>
-            </form>
+        <!-- LOGIN -->
+        <div class="form-container sign-in-container">
+            <?= form_open('login/cekUser'); ?>
+            <?= csrf_field(); ?>
+
+            <h1>Sign in</h1>
+            <div class="social-container">
+            </div>
+            <div class="input-group mb-3">
+                <?php
+                // if (session()->getFlashdata('errIdUser')) {
+                //     $isInvalidUser = 'is-invalid';
+                // } else {
+                //     $isInvalidUser = '';
+                // }
+
+                $isInvalidUser = (session()->getFlashdata('errIdUser')) ? 'is-invalid' : '';
+                ?>
+                <input type="text" class="form-control <?= $isInvalidUser ?>" name="iduser" placeholder="Input ID User" autofocus />
+                <?php
+                if (session()->getFlashdata('errIdUser')) {
+                    echo '<div  id="validationServer03Feedback" class="invalid-feedback">' . session()->getFlashdata('errIdUser') . ' 
+                     </div>';
+                }
+                ?>
+            </div>
+            <div class="input-group mb-3">
+                <?php $isInvalidPassword = (session()->getFlashdata('errPassword')) ? 'is-invalid' : '';
+                ?>
+                <input type="password" class="form-control <?= $isInvalidPassword ?>" name="pass" placeholder="Password" />
+                <?php
+                if (session()->getFlashdata('errPassword')) {
+                    echo '<div  id="validationServer03Feedback" class="invalid-feedback">' . session()->getFlashdata('errPassword') . '   </div>';
+                }
+                ?>
+            </div>
+            <button>Sign In</button>
         </div>
+        <?= form_close(); ?>
+
         <div class="overlay-container">
             <div class="overlay">
                 <div class="overlay-panel overlay-left">
