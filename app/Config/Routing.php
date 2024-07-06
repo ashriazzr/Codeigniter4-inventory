@@ -66,7 +66,7 @@ class Routing extends BaseRouting
      *
      * Default: false
      */
-    public bool $translateURIDashes = false;
+    public bool $translateURIDashes = true;
 
     /**
      * Sets the class/method that should be called if routing doesn't

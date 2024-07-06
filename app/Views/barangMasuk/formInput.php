@@ -12,12 +12,12 @@ Input Incoming Goods<?= $this->endSection('judul'); ?>
 <?= $this->section('isi'); ?>
 <div class="row">
   <div class="form-group col-md-6">
-    <label>Input Faktur Incoming Goods</label>
+    <label>Input Purchase Order Incoming Goods</label>
     <input type="text" class="form-control" placeholder="No. Faktur" name="faktur" id="faktur">
   </div>
 
   <div class="form-group col-md-6">
-    <label>Faktur Date</label>
+    <label>Date PO</label>
     <input type="date" class="form-control" name="tglfaktur" id="tglfaktur" value="<?= date('Y-m-d') ?>">
   </div>
 </div>

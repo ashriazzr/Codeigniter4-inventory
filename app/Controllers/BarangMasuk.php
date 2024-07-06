@@ -211,9 +211,7 @@ class BarangMasuk extends BaseController
         $modelBarangMasuk = new ModelBarangMasuk();
 
         $totalData = $search ? $modelBarangMasuk->showData_search($search)->countAllResults() : $modelBarangMasuk->countAllResults();
-
         $dataBarangMasuk = $search ? $modelBarangMasuk->showData_search($search)->paginate(10, 'barangMasuk') : $modelBarangMasuk->paginate(10, 'barangMasuk');
-
         $nohalaman = $this->request->getVar('page_barangMasuk') ? $this->request->getVar('page_barangMasuk') : 1;
 
         $data = [
@@ -243,4 +241,40 @@ class BarangMasuk extends BaseController
             echo json_encode($json);
         }
     }
+    // public function editFaktur($faktur)
+    // {
+    //     $modelBarangMasuk = new ModelBarangMasuk();
+    //     $modelDetailBarangMasuk = new ModelDetailBarangMasuk();
+
+    //     $dataBarangMasuk = $modelBarangMasuk->find($faktur);
+    //     $dataDetailBarangMasuk = $modelDetailBarangMasuk->where('detfaktur', $faktur)->findAll();
+
+    //     $data = [
+    //         'barangMasuk' => $dataBarangMasuk,
+    //         'detailBarangMasuk' => $dataDetailBarangMasuk
+    //     ];
+
+    //     return view('barangMasuk/editFaktur', $data);
+    // }
+    // public function hapus()
+    // {
+    //     if ($this->request->isAJAX()) {
+    //         $id = $this->request->getPost('detfaktur');
+
+    //         $modelProduct = new ModelBarangMasuk();
+
+    //         if ($modelProduct->delete($id)) {
+    //             $json = [
+    //                 'success' => 'Success delete data Customer'
+    //             ];
+    //         } else {
+    //             $json = [
+    //                 'error' => 'Failed to delete data Customer'
+    //             ];
+    //         }
+
+    //         echo json_encode($json);
+    //     }
+    //     redirect()->to('/barangMasuk/data');
+    // }
 }

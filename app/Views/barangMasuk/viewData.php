@@ -14,7 +14,7 @@ Data Transaction Incoming Goods
 <?= form_open('barangMasuk/data') ?>
 <?= "<span class=\"badge badge-success\"> Total Data : $totalData</span> " ?>
 <div class="input-group mb-3">
-    <input type="text" class="form-control" placeholder="Search based on facture" name="search" value="<?= $search ?>" autofocus="true">
+    <input type="text" class="form-control" placeholder="Search based on PO number" name="search" value="<?= $search ?>" autofocus="true">
     <div class="input-group-append">
         <button class="btn btn-outline-primary" type="submit" name="searchButton"><i class="fa fa-search"></i></button>
     </div>
@@ -24,7 +24,7 @@ Data Transaction Incoming Goods
     <thead>
         <tr>
             <th>No</th>
-            <th>Facture</th>
+            <th>No PO</th>
             <th>Date</th>
             <th>Total Item</th>
             <th>Total Price (Rp)</th>
@@ -52,6 +52,13 @@ Data Transaction Incoming Goods
                 <td><?= number_format($row['totalharga'], 0, ",", ".") ?></td>
                 <td>
 
+                    <button type="button" class="btn btn-sm btn-info" onclick="edit('<?= $row['faktur'] ?>')"><i class="fa fa-edit"></i></button>
+                    <form action="/barangmasuk/hapus/<?= $row['faktur'] ?>" method="POST" style="display:inline;" onsubmit="hapus();">
+                        <input type="hidden" value="DELETE" name="_method">
+                        <button type=" submit" class="btn btn-sm btn-danger" title="Delete Data">
+                            <i class="fa fa-trash-alt"></i>
+                        </button>
+                    </form>
                 </td>
             </tr>
         <?php endforeach; ?>
@@ -81,6 +88,20 @@ Data Transaction Incoming Goods
                 alert(xhr.status + '\n' + thrownError);
             }
         });
+    }
+
+    function edit(code) {
+        window.location.href = ('/barangMasuk/editFaktur/' + code);
+    }
+
+    function hapus() {
+        var pesan = confirm('Are you sure want to delete this data?');
+
+        if (pesan) {
+            return true;
+        } else {
+            return false;
+        }
     }
 </script>
 <?= $this->endSection('isi'); ?>

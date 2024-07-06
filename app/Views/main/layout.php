@@ -149,7 +149,7 @@
                             </li>
                             <li class="nav-header">Transaction</li>
                             <li class="nav-item">
-                                <a href="<?= site_url('barangMasuk/index'); ?>" class="nav-link">
+                                <a href="<?= site_url('barangMasuk/data'); ?>" class="nav-link">
                                     <i class="nav-icon fa fa-arrow-circle-down text-primary"></i>
                                     <p class="text">Incoming Goods</p>
                                 </a>
@@ -158,6 +158,12 @@
                                 <a href="<?= site_url('barangkeluar/index'); ?>" class="nav-link">
                                     <i class="nav-icon fa fa-arrow-circle-up text-warning"></i>
                                     <p class="text">Outgoing Goods</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="<?= site_url('laporan/index'); ?>" class="nav-link">
+                                    <i class="nav-icon fa fa-file text-warning"></i>
+                                    <p class="text">Report Transaction</p>
                                 </a>
                             </li>
                         <?php endif;  ?>

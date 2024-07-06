@@ -17,4 +17,5 @@ class ModelBarangMasuk extends Model
     {
         return $this->table('barangMasuk')->like('faktur', $search);
     }
+    
 }

@@ -2,21 +2,24 @@
 
 namespace App\Controllers;
 
+use Config\Database;
 use App\Controllers\BaseController;
 use App\Models\ModelBarangKeluar;
+use App\Models\ModelDataBarangKeluar;
 use App\Models\ModelDataProduct;
 use App\Models\ModelDetailBarangkeluar;
+use App\Models\ModelPelanggan;
 use App\Models\ModelProduct;
 use App\Models\ModelTempBarangKeluar;
 use CodeIgniter\HTTP\ResponseInterface;
 use SebastianBergmann\Invoker\Invoker;
 use Config\Services;
 
-class Barangkeluar extends BaseController
+class BarangKeluar extends BaseController
 {
     private function buatFaktur()
     {
-        $realDate = date('Y-m-d');
+        $realDate = date('d-m-Y');
         $modelBarangkeluar = new ModelBarangKeluar();
 
         $hasil = $modelBarangkeluar->noFaktur($realDate)->getRowArray();
@@ -26,7 +29,7 @@ class Barangkeluar extends BaseController
         //nomor urut ditambah 1
         $nextNoUrut = intval($lastNoUrut) + 1;
         // membuat format nomor transaksi berikutnya
-        $noFaktur = date('dmy', strtotime($realDate)) . sprintf('%04s', $nextNoUrut);
+        $noFaktur = date('dmY', strtotime($realDate)) . sprintf('%04s', $nextNoUrut);
         return $noFaktur;
     }
 
@@ -42,7 +45,7 @@ class Barangkeluar extends BaseController
         // nomor urut ditambah 1
         $nextNoUrut = intval($lastNoUrut) + 1;
         // membuat format nomor transaksi berikutnya
-        $noFaktur = date('dmy', strtotime($realDate)) . sprintf('%04s', $nextNoUrut);
+        $noFaktur = date('dmY', strtotime($realDate)) . sprintf('%04s', $nextNoUrut);
 
         $json = [
             'nofaktur' => $noFaktur
@@ -51,7 +54,7 @@ class Barangkeluar extends BaseController
     }
     public function index()
     {
-        return view('barangKeluar/viewData');
+        return view('barangKeluar/viewdata');
     }
 
     public function data()
@@ -285,6 +288,239 @@ class Barangkeluar extends BaseController
                 'success' => 'The transaction has been successfully saved.',
                 'printfaktur' => site_url('barangKeluar/printFaktur/' . $nofaktur)
             ];
+            echo json_encode($json);
+        }
+    }
+    public function printFaktur($faktur)
+    {
+        $modelBarangkeluar = new ModelBarangKeluar();
+        $modelDetail = new ModelDetailBarangkeluar();
+        $modelCustomer = new ModelPelanggan();
+
+        $cekData = $modelBarangkeluar->find($faktur);
+        $dataCustomer = $modelCustomer->find($cekData['idpel']);
+        $nameCustomer = ($dataCustomer != null) ? $dataCustomer['pelnama'] : '-';
+
+        if ($cekData != null) {
+            $data = [
+                'faktur' => $faktur,
+                'date' => $cekData['tglfaktur'],
+                'namecustomer' => $nameCustomer,
+                'detailproduct' => $modelDetail->showDataTemp($faktur),
+                'jumlahuang' => $cekData['jumlahuang'],
+                'sisauang' => $cekData['sisauang'],
+
+            ];
+            return view('barangkeluar/printFaktur', $data);
+        } else {
+            return redirect()->to(site_url('barangkeluar/niput'));
+        }
+    }
+
+    public function listData()
+    {
+        $tglawal = $this->request->getPost('tglawal');
+        $tglakhir = $this->request->getPost('tglakhir');
+
+        $request = Services::request();
+        $datamodel = new ModelDataBarangKeluar($request);
+        if ($request->getMethod(true) == 'POST') {
+            $lists = $datamodel->get_datatables($tglawal, $tglakhir);
+            $data = [];
+            $no = $request->getPost("start");
+            foreach ($lists as $list) {
+                $no++;
+                $row = [];
+
+                $buttonPrint = "<button type=\"button\" class=\"btn btn-sm btn-info\" onclick=\"print('" . $list->faktur . "')\"><i class=\"fa fa-print\"></i></button>";
+                $buttonDelete = "<button type=\"button\" class=\"btn btn-sm btn-danger\" onclick=\"hapus('" . $list->faktur . "')\"><i class=\"fa fa-trash-alt\"></i></button>";
+                $buttonEdit = "<button type=\"button\" class=\"btn btn-sm btn-primary\" onclick=\"edit('" . $list->faktur . "')\"><i class=\"fa fa-edit\"></i></button>";
+
+
+                $row[] = $no;
+                $row[] = $list->faktur;
+                $row[] = $list->tglfaktur;
+                $row[] = $list->pelnama;
+                $row[] = number_format($list->totalharga, 0, ",", ".");
+                $row[] = $buttonPrint . " " . $buttonDelete . ' ' . $buttonEdit;
+                $data[] = $row;
+            }
+            $output = [
+                "draw" => $request->getPost('draw'),
+                "recordsTotal" => $datamodel->count_all($tglawal, $tglakhir),
+                "recordsFiltered" => $datamodel->count_filtered($tglawal, $tglakhir),
+                "data" => $data
+            ];
+            echo json_encode($output);
+        }
+    }
+    function deleteTransaction()
+    {
+        if ($this->request->isAJAX()) {
+            $faktur = $this->request->getPost('faktur');
+
+            $modelBarangkeluar = new ModelBarangKeluar();
+            $db = \Config\Database::connect();
+            $db->table('detail_barangkeluar')->delete(['detfaktur' => $faktur]);
+            $modelBarangkeluar->delete($faktur);
+
+            $json = [
+                'success' => 'Success delete Transaction'
+            ];
+            echo json_encode($json);
+        }
+    }
+
+    public function edit($faktur)
+    {
+        $modelBarangkeluar = new ModelBarangKeluar();
+        $modelCustomer = new ModelPelanggan();
+        $rowData = $modelBarangkeluar->find($faktur);
+        $rowCustomer = $modelCustomer->find($rowData['idpel']);
+
+        $data = [
+            'nofaktur' => $faktur,
+            'tanggal' => $rowData['tglfaktur'],
+            'namecustomer' => $rowCustomer['pelnama'],
+
+        ];
+        return view('barangkeluar/formEdit', $data);
+    }
+    function ambilTotalPrice()
+    {
+        if ($this->request->isAJAX()) {
+            $nofaktur = $this->request->getPost('nofaktur');
+            $modelDetail = new ModelDetailBarangkeluar();
+
+            $totalPrice = $modelDetail->ambilTotalPrice($nofaktur);
+            $json = [
+                'totalprice' => "Rp. " . number_format($totalPrice, 0, ",", ".")
+            ];
+            echo json_encode($json);
+        }
+    }
+    function showDataDetail()
+    {
+        if ($this->request->isAJAX()) {
+            $nofaktur = $this->request->getPost('nofaktur');
+
+            $modelDetail = new ModelDetailBarangkeluar();
+            $dataTemp = $modelDetail->showDataTemp($nofaktur);
+            $data = [
+                'showdata' => $dataTemp
+            ];
+
+            $json = [
+                'data' => view('barangKeluar/datadetail', $data)
+            ];
+            echo json_encode($json);
+        }
+    }
+
+    function deleteItemDetail()
+    {
+
+        if ($this->request->isAJAX()) {
+            $id = $this->request->getPost('id');
+
+            $modelDetail = new ModelDetailBarangkeluar();
+            $modelBarangkeluar = new ModelBarangKeluar();
+
+            $rowData = $modelDetail->find($id);
+            $noFaktur = $rowData['detfaktur'];
+
+            $modelDetail->delete($id);
+            $totalPrice = $modelDetail->ambilTotalPrice($noFaktur);
+            // LAKUKAN UPDATE TOTAL PRICE
+            $modelBarangkeluar->update($noFaktur, [
+                'totalharga' => $totalPrice
+            ]);
+
+
+            $json = [
+                'success' => 'Delete item success'
+            ];
+
+            echo json_encode($json);
+        }
+    }
+    function editItem()
+    {
+        if ($this->request->isAJAX()) {
+            $iddetail = $this->request->getPost('iddetail');
+            $jml = $this->request->getPost('jml');
+
+            $modelDetail = new ModelDetailBarangkeluar();
+            $modelBarangkeluar = new ModelBarangKeluar();
+
+            $rowData = $modelDetail->find($iddetail);
+            $noFaktur = $rowData['detfaktur'];
+            $sellPrice = $rowData['dethargajual'];
+
+
+            // melakukan update pada tabel detail
+            $modelDetail->update($iddetail, [
+                'detjml' => $jml,
+                'detsubtotal' => intval($sellPrice) * $jml
+
+            ]);
+
+            // ambil total price
+            $totalPrice = $modelDetail->ambilTotalPrice($noFaktur);
+            //UPDATE BARANG KELUAR
+
+            $modelBarangkeluar->update($noFaktur, [
+                'totalharga' => $totalPrice
+            ]);
+            $json = [
+                'success' => 'Success update Item'
+            ];
+            echo json_encode($json);
+        }
+    }
+
+    function saveItemDetail()
+    {
+        if ($this->request->isAJAX()) {
+            $nofaktur = $this->request->getPost('nofaktur');
+            $codeproduct = $this->request->getPost('codeproduct');
+            $nameproduct = $this->request->getPost('nameproduct');
+            $sellprice = $this->request->getPost('sellprice');
+            $jml = $this->request->getPost('jml');
+
+            $modelTempBarangKeluar = new ModelDetailBarangkeluar();
+            $modelProduct = new ModelProduct();
+
+            $ambilDataProduct = $modelProduct->find($codeproduct);
+            $stockProduct = $ambilDataProduct['brgstock'];
+
+            if ($jml > intval($stockProduct)) {
+                $json = [
+                    'error' => 'Stock not ready'
+                ];
+            } else {
+                $modelTempBarangKeluar->insert([
+                    'detfaktur' => $nofaktur,
+                    'detnama' => $nameproduct,
+                    'detbrgkode' => $codeproduct,
+                    'dethargajual' => $sellprice,
+                    'detjml' => $jml,
+                    'detsubtotal' => $jml * $sellprice
+                ]);
+
+                $modelBarangkeluar = new ModelBarangKeluar();
+                // ambil total price
+                $totalPrice = $modelTempBarangKeluar->ambilTotalPrice($nofaktur);
+                //UPDATE BARANG KELUAR
+
+                $modelBarangkeluar->update($nofaktur, [
+                    'totalharga' => $totalPrice
+                ]);
+
+                $json = [
+                    'success' => 'Success Add Item'
+                ];
+            }
             echo json_encode($json);
         }
     }

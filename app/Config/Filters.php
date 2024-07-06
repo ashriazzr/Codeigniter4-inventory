@@ -86,8 +86,8 @@ class Filters extends BaseFilters
             ]
         ],
         'after' => [
-            'filterAdmin' => ['except' => ['main/*', 'unit/*', 'category/*', 'product/*', 'barangMasuk/*', 'barangKeluar/*']],
-            'filterWarehouse' => ['except' => ['main/*', 'barangMasuk/*', 'barangKeluar/*']],
+            'filterAdmin' => ['except' => ['main/*', 'unit/*', 'category/*', 'product/*', 'barangMasuk/*', 'barangKeluar/*', 'customer/*', 'laporan/*']],
+            'filterWarehouse' => ['except' => ['main/*', 'barangMasuk/*', 'barangKeluar/*', 'customer/*']],
             'filterCustomer' => ['except' => ['main/*']],
 
             // 'honeypot',

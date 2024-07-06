@@ -14,14 +14,14 @@ Input Transaction Outgoing Goods
 <div class="row">
     <div class="col-lg-4">
         <div class="form-group">
-            <label for="">No. Faktur</label>
+            <label for="">No. Invoice</label>
             <input type="text" name="nofaktur" class="form-control" id="nofaktur" value="<?= $nofaktur ?>" readonly>
         </div>
     </div>
     <div class="col-lg-4">
         <div class="form-group">
-            <label for="">Date Faktur</label>
-            <input type="date" name="tglfaktur" class="form-control" id="tglfaktur" value="<?= date('Y-m-d') ?>">
+            <label for="">Date Invoice</label>
+            <input type="date" name="tglfaktur" class="form-control" id="tglfaktur" value="<?= date('d-m-Y') ?>">
         </div>
     </div>
 
@@ -94,6 +94,9 @@ Input Transaction Outgoing Goods
         $('#sellprice').val('');
         $('#nameproduct').val('');
         $('#jml').val('0');
+        $('#codeproduct').focus();
+
+
     }
 
     function saveItem() {

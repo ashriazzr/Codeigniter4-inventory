@@ -13,7 +13,7 @@
                 <div class="form-group">
                     <label for="">No. Facture</label>
                     <input type="text" name="nofaktur" id="nofaktur" class="form-control" value="<?= $nofaktur; ?>" readonly>
-                    <input type="hidden" name="tglfaktur" value="<?= $nofaktur; ?>">
+                    <input type="hidden" name="tglfaktur" value="<?= $tglfaktur; ?>">
                     <input type="hidden" name="idcustomer" value="<?= $idcustomer; ?>">
                 </div>
                 <div class="form-group">
@@ -110,7 +110,7 @@
                             confirmButtonText: "Yes, Print it!"
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                let windowPrint = window.open(response.printFaktur, "Print Invoice Outgoing Transaction", "width=200,height=400");
+                                let windowPrint = window.open(response.printfaktur, "Print Invoice Outgoing Transaction", "width=200,height=400");
 
                                 windowPrint.focus();
                                 window.location.reload();

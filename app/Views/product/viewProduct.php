@@ -58,7 +58,6 @@ Management Data product
                 <td><?= number_format($row['brgharga'], 0); ?></td>
                 <td><?= number_format($row['brgstock'], 0); ?></td>
                 <td>
-
                     <button type="button" class="btn btn-sm btn-info" onclick="edit('<?= $row['brgkode'] ?>')"><i class="fa fa-edit"></i></button>
                     <form action="/product/deleteData/<?= $row['brgkode'] ?>" method="POST" style="display:inline;" onsubmit="hapus();">
                         <input type="hidden" value="DELETE" name="_method">
