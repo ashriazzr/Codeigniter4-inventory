@@ -1,7 +1,7 @@
 <?= $this->extend('main/layout'); ?>
 
 <?= $this->section('judul'); ?>
-Data Report Transaction Incoming Goods
+Data Report Transaction Outgoing Goods
 <?= $this->endSection('judul'); ?>
 
 <?= $this->section('subJudul'); ?>
@@ -16,7 +16,7 @@ Data Report Transaction Incoming Goods
             <div class="card-header">Choose Period</div>
             <div class="card-body bg-white">
                 <p class="card-text">
-                    <?= form_open('laporan/print-product-income-period', ['target' => '_blank']) ?>
+                    <?= form_open('laporan/print-product-outgoing-period', ['target' => '_blank']) ?>
                 <div class="form-group">
                     <label for="">First Date</label>
                     <input type="date" name="firstDate" class="form-control" required>

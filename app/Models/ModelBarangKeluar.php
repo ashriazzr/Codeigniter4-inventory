@@ -18,4 +18,8 @@ class ModelBarangKeluar extends Model
 
         // select max(faktur) as nofaktur from barangkeluar where tglfaktur='';
     }
+    public function laporanPeriode($firstDate, $lastDate)
+    {
+        return $this->table('barangkeluar')->where('tglfaktur >=', $firstDate)->where('tglfaktur <=', $lastDate)->get();
+    }
 }

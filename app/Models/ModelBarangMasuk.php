@@ -17,5 +17,9 @@ class ModelBarangMasuk extends Model
     {
         return $this->table('barangMasuk')->like('faktur', $search);
     }
-    
+
+    public function laporanPeriode($firstDate, $lastDate)
+    {
+        return $this->table('barangmasuk')->where('tglfaktur >=', $firstDate)->where('tglfaktur <=', $lastDate)->get();
+    }
 }

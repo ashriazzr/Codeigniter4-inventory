@@ -42,12 +42,6 @@
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
-                <!-- <li class="nav-item d-none d-sm-inline-block">
-                    <a href="<?= base_url() ?>/index3.html" class="nav-link">Home</a>
-                </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link">Contact</a>
-                </li> -->
             </ul>
 
             <!-- Right navbar links -->
@@ -92,7 +86,7 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="<?= base_url() ?>/index3.html" class="brand-link">
-                <img src="<?= base_url() ?>/dist/img/arrow.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <img src="<?= base_url() ?>/dist/img/arrow.png" alt="Admin Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">Inventory App</span>
             </a>
 
@@ -104,7 +98,7 @@
                         <img src="<?= base_url() ?>/dist/img/profil.jpg" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">
+                        <a href="<?= site_url('main/dashboard'); ?>" class="d-block">
                             <?= session()->namauser; ?>
                         </a>
                     </div>
@@ -223,14 +217,7 @@
                             <?= $this->renderSection('subJudul') ?>
                         </h3>
 
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
+                    
                     </div>
                     <div class="card-body">
                         <?= $this->renderSection('isi') ?>

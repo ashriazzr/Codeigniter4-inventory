@@ -11,4 +11,8 @@ class Main extends BaseController
     {
         return view('main/layout');
     }
+    public function dashboard()
+    {
+        return view('main/dashboard');
+    }
 }
