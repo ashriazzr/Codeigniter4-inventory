@@ -35,8 +35,8 @@ class Filters extends BaseFilters
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
         'filterAdmin' => \App\Filters\FilterAdmin::class,
-        'filterWarehouse' => \App\Filters\FilterAdmin::class,
-        'filterCustomer' => \App\Filters\FilterAdmin::class
+        'filterWarehouse' => \App\Filters\FilterWarehouse::class,
+        'filterManager' => \App\Filters\FilterManager::class
     ];
 
     /**
@@ -81,14 +81,14 @@ class Filters extends BaseFilters
             'filterWarehouse' => [
                 'except' => ['login/*', 'login', '/']
             ],
-            'filterCustomer' => [
+            'filterManager' => [
                 'except' => ['login/*', 'login', '/']
             ]
         ],
         'after' => [
-            'filterAdmin' => ['except' => ['main/*', 'unit/*', 'category/*', 'product/*', 'barangMasuk/*', 'barangKeluar/*', 'customer/*', 'laporan/*']],
+            'filterAdmin' => ['except' => ['main/*', 'unit/*', 'category/*', 'product/*', 'barangMasuk/*', 'barangKeluar/*', 'customer/*', 'laporan/*', 'users/*']],
             'filterWarehouse' => ['except' => ['main/*', 'barangMasuk/*', 'barangKeluar/*', 'customer/*']],
-            'filterCustomer' => ['except' => ['main/*']],
+            'filterManager' => ['except' => ['main/*', 'laporan/*', 'customer/*']],
 
             // 'honeypot',
             // 'secureheaders',

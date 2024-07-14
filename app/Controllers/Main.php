@@ -9,7 +9,7 @@ class Main extends BaseController
 {
     public function index()
     {
-        return view('main/layout');
+        return view('main/dashboard');
     }
     public function dashboard()
     {

@@ -56,23 +56,32 @@ class Login extends BaseController
                 session()->setFlashdata($sessError);
                 return redirect()->to(site_url('login/index'));
             } else {
-                $passwordUser = $cekUserLogin['userpassword'];
-                if (password_verify($pass, $passwordUser)) {
-                    $idLevel = $cekUserLogin['userlevelid'];
-                    $simpan_session = [
-                        'iduser' => $iduser,
-                        'namauser' => $cekUserLogin['usernama'],
-                        'idlevel' => $idLevel
-                    ];
-                    session()->set($simpan_session);
-
-                    return redirect()->to('/main/index');
-                } else {
+                if ($cekUserLogin['useraktif'] != '1') {
                     $sessError = [
-                        'errPassword' => 'Wrong password, try again!',
+                        'errIdUser' => 'Maaf user tidak aktif',
                     ];
                     session()->setFlashdata($sessError);
                     return redirect()->to(site_url('login/index'));
+                } else {
+
+                    $passwordUser = $cekUserLogin['userpassword'];
+                    if (password_verify($pass, $passwordUser)) {
+                        $idLevel = $cekUserLogin['userlevelid'];
+                        $simpan_session = [
+                            'iduser' => $iduser,
+                            'namauser' => $cekUserLogin['usernama'],
+                            'idlevel' => $idLevel
+                        ];
+                        session()->set($simpan_session);
+
+                        return redirect()->to('/main/index');
+                    } else {
+                        $sessError = [
+                            'errPassword' => 'Wrong password, try again!',
+                        ];
+                        session()->setFlashdata($sessError);
+                        return redirect()->to(site_url('login/index'));
+                    }
                 }
             }
         }

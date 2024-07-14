@@ -6,7 +6,7 @@ use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 
-class FilterCustomer implements FilterInterface
+class filterManager implements FilterInterface
 {
     public function before(RequestInterface $request, $arguments = null)
     {
@@ -17,7 +17,7 @@ class FilterCustomer implements FilterInterface
 
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
-        if (session()->idlevel == 4) {
+        if (session()->idlevel == 3) {
             return redirect()->to('/main/index');
         }
     }

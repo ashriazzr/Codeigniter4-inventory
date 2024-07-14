@@ -19,7 +19,7 @@
 
     <style>
         .main-sidebar.sidebar-dark-primary.elevation-4 {
-            background-color: #c45161 !important;
+            background-color: #fbe0e0 !important;
         }
 
         .form-inline .input-group .form-control-sidebar {
@@ -141,6 +141,13 @@
                                     <p class="text">Product</p>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="<?= site_url('users/index'); ?>" class="nav-link">
+                                    <i class="nav-icon fa fa-users text-danger"></i>
+                                    <p class="text">Management Users</p>
+                                </a>
+                            </li>
+
                             <li class="nav-header">Transaction</li>
                             <li class="nav-item">
                                 <a href="<?= site_url('barangMasuk/data'); ?>" class="nav-link">
@@ -160,25 +167,25 @@
                                     <p class="text">Report Transaction</p>
                                 </a>
                             </li>
-                        <?php endif;  ?>
 
-                        <!-- USER LEVEL 2 -->
-                        <?php if (session()->idlevel == 2) : ?>
-                            <li class="nav-header">Transaction</li>
-                            <li class="nav-item">
-                                <a href="<?= site_url('barangMasuk/index'); ?>" class="nav-link">
-                                    <i class="nav-icon fa fa-arrow-circle-down text-primary"></i>
-                                    <p class="text">Incoming Goods</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="<?= site_url('barangkeluar/index'); ?>" class="nav-link">
-                                    <i class="nav-icon fa fa-arrow-circle-up text-warning"></i>
-                                    <p class="text">Outgoing Goods</p>
-                                </a>
-                            </li>
-                        <?php endif;  ?>
 
+                            <!-- USER LEVEL 2 -->
+                            <?php if (session()->idlevel == 2) : ?>
+                                <li class="nav-header">Transaction</li>
+                                <li class="nav-item">
+                                    <a href="<?= site_url('barangMasuk/index'); ?>" class="nav-link">
+                                        <i class="nav-icon fa fa-arrow-circle-down text-primary"></i>
+                                        <p class="text">Incoming Goods</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?= site_url('barangkeluar/index'); ?>" class="nav-link">
+                                        <i class="nav-icon fa fa-arrow-circle-up text-warning"></i>
+                                        <p class="text">Outgoing Goods</p>
+                                    </a>
+                                </li>
+                            <?php endif;  ?>
+                        <?php endif;  ?>
                         <li class="nav-item">
                             <a href="<?= site_url('login/logout'); ?>" class="nav-link">
                                 <i class="nav-icon fa fa-sign-out-alt text-primary"></i>
@@ -217,7 +224,7 @@
                             <?= $this->renderSection('subJudul') ?>
                         </h3>
 
-                    
+
                     </div>
                     <div class="card-body">
                         <?= $this->renderSection('isi') ?>

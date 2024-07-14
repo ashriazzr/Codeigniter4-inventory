@@ -39,7 +39,7 @@ Data Transaction Incoming Goods
         ?>
 
             <tr>
-                <td><?= $nomor; ?></td>
+                <td><?= $nomor++; ?></td>
                 <td><?= $row['faktur']; ?></td>
                 <td><?= date('d-m-Y', strtotime($row['tglfaktur'])); ?></td>
                 <td align="center">

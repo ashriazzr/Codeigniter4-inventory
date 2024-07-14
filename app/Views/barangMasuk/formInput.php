@@ -13,7 +13,7 @@ Input Incoming Goods<?= $this->endSection('judul'); ?>
 <div class="row">
   <div class="form-group col-md-6">
     <label>Input Purchase Order Incoming Goods</label>
-    <input type="text" class="form-control" placeholder="No. Faktur" name="faktur" id="faktur">
+    <input type="text" class="form-control" placeholder="No. PO" name="faktur" id="faktur">
   </div>
 
   <div class="form-group col-md-6">

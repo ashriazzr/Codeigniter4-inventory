@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 06, 2024 at 02:32 PM
+-- Generation Time: Jul 09, 2024 at 03:03 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -41,7 +41,6 @@ CREATE TABLE `barangkeluar` (
 --
 
 INSERT INTO `barangkeluar` (`faktur`, `tglfaktur`, `idpel`, `totalharga`, `jumlahuang`, `sisauang`) VALUES
-('050720240001', '2024-07-05', 36, 110000, 110000, 0),
 ('050720240002', '2024-07-05', 27, 435000, 135000, 0);
 
 -- --------------------------------------------------------
@@ -64,7 +63,9 @@ INSERT INTO `barangmasuk` (`faktur`, `tglfaktur`, `totalharga`) VALUES
 ('73957', '2024-07-04', 250000),
 ('834798247', '2024-07-04', 500000),
 ('F-002', '2024-07-03', 500000),
-('F-006', '2024-07-03', 500000);
+('F-006', '2024-07-03', 500000),
+('fb xf', '2024-07-07', 336000),
+('wdADf', '2024-07-06', 650000);
 
 -- --------------------------------------------------------
 
@@ -114,8 +115,6 @@ CREATE TABLE `detail_barangkeluar` (
 --
 
 INSERT INTO `detail_barangkeluar` (`id`, `detfaktur`, `detbrgkode`, `dethargamasuk`, `dethargajual`, `detjml`, `detsubtotal`) VALUES
-(50, '050720240001', 'burger_001', NULL, 60000, 1, 60000),
-(51, '050720240001', 'burger_002', NULL, 50000, 1, 50000),
 (53, '050720240002', 'burger_001', NULL, 60000, 6, 360000),
 (54, '050720240002', 'ice_001', NULL, 75000, 1, 75000);
 
@@ -165,7 +164,10 @@ INSERT INTO `detail_barangmasuk` (`iddetail`, `detfaktur`, `detbrgkode`, `dethar
 (14, 'F-002', 'burger_001', 50000, 60000, 10, 500000),
 (15, 'F-006', 'ice_001', 50000, 75000, 10, 500000),
 (16, '834798247', 'ice_001', 50000, 75000, 10, 500000),
-(17, '73957', 'ice_001', 50000, 75000, 5, 250000);
+(17, '73957', 'ice_001', 50000, 75000, 5, 250000),
+(18, 'wdADf', 'ice_001', 50000, 75000, 5, 250000),
+(19, 'wdADf', 'ice_002', 40000, 50000, 10, 400000),
+(20, 'fb xf', 'bev_003', 28000, 1350000, 12, 336000);
 
 --
 -- Triggers `detail_barangmasuk`
@@ -278,11 +280,11 @@ CREATE TABLE `product` (
 
 INSERT INTO `product` (`brgkode`, `brgnama`, `brgkatid`, `brgsatid`, `brgharga`, `brggambar`, `brgstock`) VALUES
 ('bev_002', 'Mai Tai cockail', 26, 4, 250000, 'upload/bev_002.jpeg', 38),
-('bev_003', 'Moet Champaign', 26, 2, 1350000, 'upload/bev_003.jpeg', 25),
-('burger_001', 'Cheese Burger', 27, 2, 60000, 'upload/burger_2.jpeg', 38),
-('burger_002', 'Chicken Cheese Burger', 27, 2, 50000, 'upload/burger_002.jpeg', 29),
-('ice_001', 'Gelato Banana', 16, 1, 75000, 'upload/ice_001.jpeg', 239),
-('ice_002', 'Ice Cream Strawberry', 16, 1, 50000, 'upload/ice_002.jpeg', 47);
+('bev_003', 'Moet Champaign', 26, 2, 1350000, 'upload/bev_003.jpeg', 37),
+('burger_001', 'Cheese Burger', 27, 2, 60000, 'upload/burger_2.jpeg', 39),
+('burger_002', 'Chicken Cheese Burger', 27, 2, 50000, 'upload/burger_002.jpeg', 30),
+('ice_001', 'Gelato Banana', 16, 1, 75000, 'upload/ice_001.jpeg', 244),
+('ice_002', 'Ice Cream Strawberry', 16, 1, 50000, 'upload/ice_002.jpeg', 57);
 
 -- --------------------------------------------------------
 
@@ -347,18 +349,19 @@ CREATE TABLE `users` (
   `userid` char(50) NOT NULL,
   `usernama` varchar(100) DEFAULT NULL,
   `userpassword` varchar(100) DEFAULT NULL,
-  `userlevelid` int(11) DEFAULT NULL
+  `userlevelid` int(11) DEFAULT NULL,
+  `useraktif` char(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`userid`, `usernama`, `userpassword`, `userlevelid`) VALUES
-('admin', 'Administrator', '$2y$10$TpFgkWUWSvuBYmW4Yj.x1u.T3Osj9f5djS1ir.aXPTc8DJd7NuHvC', 1),
-('coba', 'coba', '123', 4),
-('Manager', 'Ashri', '$2y$10$TpFgkWUWSvuBYmW4Yj.x1u.T3Osj9f5djS1ir.aXPTc8DJd7NuHvC', 3),
-('Warehouse', 'Rachel', '$2y$10$TpFgkWUWSvuBYmW4Yj.x1u.T3Osj9f5djS1ir.aXPTc8DJd7NuHvC', 2);
+INSERT INTO `users` (`userid`, `usernama`, `userpassword`, `userlevelid`, `useraktif`) VALUES
+('admin', 'Administrator', '$2y$10$TpFgkWUWSvuBYmW4Yj.x1u.T3Osj9f5djS1ir.aXPTc8DJd7NuHvC', 1, '1'),
+('coba', 'coba', '123', 4, '1'),
+('Manager', 'Ashri', '$2y$10$TpFgkWUWSvuBYmW4Yj.x1u.T3Osj9f5djS1ir.aXPTc8DJd7NuHvC', 3, '1'),
+('Warehouse', 'Rachel', '$2y$10$TpFgkWUWSvuBYmW4Yj.x1u.T3Osj9f5djS1ir.aXPTc8DJd7NuHvC', 2, '1');
 
 --
 -- Indexes for dumped tables
@@ -462,13 +465,13 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `detail_barangkeluar`
 --
 ALTER TABLE `detail_barangkeluar`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- AUTO_INCREMENT for table `detail_barangmasuk`
 --
 ALTER TABLE `detail_barangmasuk`
-  MODIFY `iddetail` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `iddetail` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `levels`
@@ -492,13 +495,13 @@ ALTER TABLE `pelanggan`
 -- AUTO_INCREMENT for table `temp_barangkeluar`
 --
 ALTER TABLE `temp_barangkeluar`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 
 --
 -- AUTO_INCREMENT for table `temp_barangmasuk`
 --
 ALTER TABLE `temp_barangmasuk`
-  MODIFY `iddetail` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `iddetail` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `unit`

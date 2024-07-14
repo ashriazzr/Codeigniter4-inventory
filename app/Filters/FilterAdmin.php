@@ -17,7 +17,7 @@ class FilterAdmin implements FilterInterface
 
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
-        if (session()->idlevel == 2 ) {
+        if (session()->idlevel == 2) {
             return redirect()->to('/main/index');
         }
     }
